@@ -1,6 +1,9 @@
+var blah;
+
+
 d3.json('/data/scrape_records.json').then((data) => {
     buildTable(data)
-
+    blah = data
 });
 
 function filterData(data) {
@@ -26,12 +29,14 @@ function filterData(data) {
 
 
 function buildTable(data) {
+    console.log(data)
     d3.select("tbody")
         .selectAll("tr")
         .data(data)
         .enter()
         .append("tr")
         .html(function(d) {
+            console.log(d)
             if (d.meta_score > 89) {
                 return `<td>${d.artist}</td>
                 <td>${d.album}</td>

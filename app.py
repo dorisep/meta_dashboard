@@ -33,8 +33,8 @@ def get_init_data():
     return jsonify(init_data)
    
 
-@app.route('/gimme/<car>')
-def gimme(car):
+@app.route('/gimme/<truck>/<car>')
+def gimme(car, truck):
     return car
 
 

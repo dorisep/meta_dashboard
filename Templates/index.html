@@ -15,13 +15,34 @@
     <nav class="navbar navbar-light" style="background-color: lemonchiffon;">
         <a class="navbar-brand" href="#">Metacritic: Music Analysis</a>
     </nav>
-    <h1>its out there</h1>
-    <h2>see i told you</h2>
-   
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <script src="https://d3js.org/d3.v5.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
-    <script type="text/javascript" src="/static/app.js"></script>
+
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10" style="height:200px;overflow:auto;">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Artist</th>
+                        <th>Album</th>
+                        <th>Genre</th>
+                        <th>Date</th>
+                        <th>MetaScore</th>
+                        <th>UserScore</th>
+                        <th>Record Label</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div class="col-md-1"></div>
+        </div>
+        <div class="MagicScroll" data-options="loop: rewind;">
+
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
+        <script type="text/javascript" src="../static/app.js"></script>
 
 </body>
 

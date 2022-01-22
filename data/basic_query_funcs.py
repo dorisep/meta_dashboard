@@ -4,7 +4,7 @@ def query_artist(artist):
 
 # func for artist queries
 def query_year(year):
-    command = (f"select * from albums where album_year = '{year}'")
+    command = (f"select * from albums where album_year like '%{year}'")
     return command
 
 # func for artist queries
@@ -13,7 +13,7 @@ def query_genre(genre):
     return command
 
 def init_index():
-    command = (f"select * from albums where meta_score > 89")
+    command = (f"select * from albums")
     return command
     
 queries_dict = {

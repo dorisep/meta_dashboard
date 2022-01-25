@@ -1,27 +1,21 @@
-// var blah;
-// let intiData = d3.select("#init_data")
-// buildTable(data)
 d3.json('/get_init_data').then((data) => {
+    var years = []
     data.forEach(d => {
-        dates = d.date
-        year = dates[-4]
-        console.log(year);
+        var artist = d.artist;
+        var album = d.album;
+        var genre = d.album_genre;
+        var date = d.date;
+        var meta_score = d.meta_score;
+        var user_score = d.user_score;
+        var label = d.record_label;
+        var year = d.date.slice(-4);
+
+
+        // buildYearMenu(year)
+
     });
     buildTable(data);
-    buildYearMenu(data);
 });
-
-// function filterData(data) {
-//     data.forEach(element => {
-//         buildTable(element)
-
-
-//     });
-
-// const filteredArr = metaArray.filter(function([album_genre, value]) {
-// return value > 89
-// })
-// }
 
 
 function buildTable(data) {
@@ -41,44 +35,31 @@ function buildTable(data) {
         });
 }
 
-function buildBarChart(data) {
-    var svg = d3.select("svg"),
-        margin = 200,
-        width = svg.attr("width") - margin,
-        height = svg.attr("height") - margin;
+function buildLineChart() {
+    var trace1 = {
+        x: [1, 2, 3, 4],
+        y: [10, 15, 13, 17],
+        mode: 'markers'
+    };
 
+    var trace2 = {
+        x: [2, 3, 4, 5],
+        y: [16, 5, 11, 9],
+        mode: 'lines'
+    };
 
-    var xScale = d3.scaleBand().range([0, width]).padding(0.4),
-        yScale = d3.scaleLinear().range([height, 0]);
+    var trace3 = {
+        x: [1, 2, 3, 4],
+        y: [12, 9, 15, 12],
+        mode: 'lines+markers'
+    };
 
-    var g = svg.append("g")
-        .attr("transform", "translate(" + 100 + "," + 100 + ")");
+    var data = [trace1, trace2, trace3];
+
+    var layout = {
+        title: 'Line and Scatter Plot'
+    };
+
+    Plotly.newPlot('myDiv', data, layout);
 }
-xScale.domain(data.map(function(d) { return d.year; }));
-yScale.domain([0, d3.max(data, function(d) { return d.meta_score; })]);
-
-g.append("g")
-    .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(xScale));
-
-g.append("g")
-    .call(d3.axisLeft(yScale).tickFormat(function(d) {
-        return "$" + d;
-    }).ticks(10))
-    .append("text")
-    .attr("y", 6)
-    .attr("dy", "0.71em")
-    .attr("text-anchor", "end")
-    .text("value");
-
-
-function makePictures(data) {
-    d3.select(".MagicScroll")
-        .selectAll("img")
-        .data(data)
-        .enter()
-        .append("img")
-        .html(function(d) {
-            return `<img> src=${d[7]} </img>`
-        });
-}
+buildLineChart()

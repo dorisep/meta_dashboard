@@ -1,20 +1,7 @@
 d3.json('/get_init_data').then((data) => {
-    var years = []
-    data.forEach(d => {
-        var artist = d.artist;
-        var album = d.album;
-        var genre = d.album_genre;
-        var date = d.date;
-        var meta_score = d.meta_score;
-        var user_score = d.user_score;
-        var label = d.record_label;
-        var year = d.date.slice(-4);
 
-
-        // buildYearMenu(year)
-
-    });
     buildTable(data);
+    buildLineChart(data);
 });
 
 
@@ -35,26 +22,32 @@ function buildTable(data) {
         });
 }
 
-function buildLineChart() {
+function buildLineChart(data) {
+    let years = []
+    let scores = {}
     var trace1 = {
-        x: [1, 2, 3, 4],
-        y: [10, 15, 13, 17],
-        mode: 'markers'
-    };
-
-    var trace2 = {
-        x: [2, 3, 4, 5],
-        y: [16, 5, 11, 9],
+        x: [],
+        y: [],
         mode: 'lines'
     };
+    data.forEach(d => {
+        var year = d.date.slice(-4)
 
-    var trace3 = {
-        x: [1, 2, 3, 4],
-        y: [12, 9, 15, 12],
-        mode: 'lines+markers'
-    };
+        console.log(year)
 
-    var data = [trace1, trace2, trace3];
+        if (!trace1["x"].includes(year)) {
+            trace1["x"].push(year);
+        }
+
+        if (d.meta_score >= 90) {
+            scores[year] = (scores[year] + 1) || 1;
+        }
+    });
+    trace1["y"].push(object.values(scores))
+    console.log(trace1)
+
+
+    var data = [trace1];
 
     var layout = {
         title: 'Line and Scatter Plot'
@@ -62,4 +55,3 @@ function buildLineChart() {
 
     Plotly.newPlot('myDiv', data, layout);
 }
-buildLineChart()

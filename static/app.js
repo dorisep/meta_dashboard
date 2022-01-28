@@ -22,35 +22,48 @@ function buildTable(data) {
         });
 }
 
-function buildLineChart(data) {
+function traceAbove90(data, threshold = 90) {
     let years = []
     let scores = {}
-    var trace1 = {
+    var trace = {
         x: [],
         y: [],
-        mode: 'lines'
+        mode: 'lines+markers',
+        type: 'scatter'
     };
     data.forEach(d => {
         var year = d.date.slice(-4)
-
-        console.log(year)
-
-        if (!trace1["x"].includes(year)) {
-            trace1["x"].push(year);
-        }
-
-        if (d.meta_score >= 90) {
+        if (d.meta_score >= threshold) {
             scores[year] = (scores[year] + 1) || 1;
         }
     });
-    trace1["y"].push(object.values(scores))
-    console.log(trace1)
+    // console.log(Object.values(scores))
+    trace["x"].push(Object.keys(scores))
+    trace["y"].push(Object.values(scores))
+        // console.log(trace["x"])
+        // console.log((trace["y"]))
 
+    return trace
+}
 
-    var data = [trace1];
+function buildLineChart(data) {
 
+    data = traceAbove90(data);
+    console.log(data)
     var layout = {
-        title: 'Line and Scatter Plot'
+        title: 'Metacritic Scores Over Time',
+
+        xaxis: {
+            showline: true,
+            showticklabels: true,
+            autotick: false
+        },
+        yaxis: {
+            showgrid: false,
+            zeroline: false,
+            showline: false,
+            showticklabels: false
+        }
     };
 
     Plotly.newPlot('myDiv', data, layout);

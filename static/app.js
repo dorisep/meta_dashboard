@@ -50,46 +50,35 @@ function graph (trace1) {
     
     var xData = trace1.x;
       
-      var yData = trace1.y;
+    var yData = trace1.y;
       
-      var colors = ['rgba(67,67,67,1)', 'rgba(115,115,115,1)', 'rgba(49,130,189, 1)',
-        'rgba(189,189,189,1)'
-      ];
-      
-      var lineSize = [2, 2, 4, 2];
-      
-      var labels = ['Television', 'Newspaper', 'Internet', 'Radio'];
-      
-      var data = [];
-      
-      for ( var i = 0 ; i < xData.length ; i++ ) {
-        var result = {
-          x: xData[i],
-          y: yData[i],
-          type: 'scatter',
-          mode: 'lines',
-          line: {
-            color: colors[i],
-            width: lineSize[i]
-          }
-        };
-        var result2 = {
-          x: [xData[i][0], xData[i][11]],
-          y: [yData[i][0], yData[i][11]],
-          type: 'scatter',
-          mode: 'markers',
-          marker: {
-            color: colors[i],
-            size: 12
-          }
-        };
-        data.push(result, result2);
-      }
-      
+    var colors = [];
+    
+    var lineSize = [2, 2, 4, 2];
+    
+    var labels = [''];
+    
+    var data = [];
+    
+    for ( var i = 0 ; i < xData.length ; i++ ) {
+    var result = {
+        x: xData[i],
+        y: yData[i],
+        type: 'scatter',
+        mode: 'lines + markers',
+        line: {
+        color: colors[i],
+        width: lineSize[i]
+        }
+    };
+
+    data.push(result);
+    }
+    
       var layout = {
-        // showlegend: false,
-        // height: 600,
-        // width: 600,
+        showlegend: false,
+        height: 600,
+        width: 600,
         xaxis: {
           showline: true,
           showgrid: false,
@@ -108,10 +97,10 @@ function graph (trace1) {
           }
         },
         yaxis: {
-          showgrid: false,
+          showgrid: true,
           zeroline: false,
-          showline: false,
-          showticklabels: false
+          showline: true,
+          showticklabels: true
         },
         autosize: false,
         margin: {
@@ -128,7 +117,7 @@ function graph (trace1) {
             y: 1.05,
             xanchor: 'left',
             yanchor: 'bottom',
-            text: 'Main Source for News',
+            text: 'Number of Albums Rated 90 or Higher',
             font:{
               family: 'Arial',
               size: 30,
@@ -143,6 +132,7 @@ function graph (trace1) {
             y: -0.1,
             xanchor: 'center',
             yanchor: 'top',
+            text: 'first text',
             showarrow: false,
             font: {
               family: 'Arial',
@@ -160,7 +150,7 @@ function graph (trace1) {
           y: yData[i][0],
           xanchor: 'right',
           yanchor: 'middle',
-          text: labels[i] + ' ' + yData[i][0] +'%',
+          // text: labels[i] + ' ' + yData[i][0] +'%',
           showarrow: false,
           font: {
             family: 'Arial',
@@ -168,22 +158,8 @@ function graph (trace1) {
             color: 'black'
           }
         };
-        var result2 = {
-          xref: 'paper',
-          x: 0.95,
-          y: yData[i][11],
-          xanchor: 'left',
-          yanchor: 'middle',
-          text: yData[i][11] +'%',
-          font: {
-            family: 'Arial',
-            size: 16,
-            color: 'black'
-          },
-          showarrow: false
-        };
       
-        layout.annotations.push(result, result2);
+        // layout.annotations.push(result);
       }
       
       Plotly.newPlot('myDiv', data, layout);

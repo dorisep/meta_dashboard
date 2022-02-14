@@ -30,10 +30,10 @@ def get_init_data():
     cur.execute(init_command)
     rows = cur.fetchall()
     init_data = [{k: row[k] for k in row.keys()} for row in rows]
-    print(init_data[0]['date'])
+    conn.close()
     return jsonify(init_data)
     
-# @app.route('/query')  
+@app.route('/scrape')  
 
 
 @app.route('/gimme/<truck>/<car>')

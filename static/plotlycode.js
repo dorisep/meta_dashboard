@@ -49,7 +49,7 @@ for (var i = 0; i < xData.length; i++) {
 var layout = {
     showlegend: false,
     height: 600,
-    width: 600,
+    width: 800,
     xaxis: {
         showline: true,
         showgrid: false,

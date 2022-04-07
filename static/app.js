@@ -1,8 +1,8 @@
 d3.json('/get_init_data').then((data) => {
-
-    buildTable(data);
-    // buildLineChart(data);
-    graph(traceAbove90(data));
+    const score90 = data.filter(data => data.meta_score >= 90);
+    // score90.meta_score.sort((a, b) => a - b);
+    const sorted90 = score90.sort((a, b) => (b.meta_score > a.meta_score ? 1 : -1));
+    buildTable(sorted90);
 });
 
 
@@ -22,145 +22,61 @@ function buildTable(data) {
                 <td>${d.record_label}</td>`
         });
 }
+// set the dimensions and margins of the graph
+var margin = {top: 10, right: 30, bottom: 90, left: 40},
+    width = 460 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
 
-function traceAbove90(data, threshold = 90) {
-    let years = []
-    let scores = {}
-    var trace = {
+// append the svg object to the body of the page
+var svg = d3.select("#my_dataviz")
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
 
-        mode: 'lines+markers',
-        type: 'scatter'
-    };
-    data.forEach(d => {
-        var year = d.date.slice(-4)
-        if (d.meta_score >= threshold) {
-            scores[year] = (scores[year] + 1) || 1;
-        }
-    });
-    // console.log(Object.values(scores))
-    trace["x"] = [Object.keys(scores)];
-    trace["y"] = [Object.values(scores)];
-        // console.log(trace["x"])
-        // console.log((trace["y"]))
+// Parse the Data
+d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/7_OneCatOneNum_header.csv", function(data) {
 
-    return trace
-}
+// X axis
+var x = d3.scaleBand()
+    .range([ 0, width ])
+    .domain(data.map(function(d) { return d.Country; }))
+    .padding(1);
+svg.append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+    .attr("transform", "translate(-10,0)rotate(-45)")
+    .style("text-anchor", "end");
 
-function graph (trace1) {
-    
-    var xData = trace1.x;
-      
-    var yData = trace1.y;
-      
-    var colors = [];
-    
-    var lineSize = [2, 2, 4, 2];
-    
-    var labels = [''];
-    
-    var data = [];
-    
-    for ( var i = 0 ; i < xData.length ; i++ ) {
-    var result = {
-        x: xData[i],
-        y: yData[i],
-        type: 'scatter',
-        mode: 'lines + markers',
-        line: {
-        color: colors[i],
-        width: lineSize[i]
-        }
-    };
+// Add Y axis
+var y = d3.scaleLinear()
+    .domain([0, 13000])
+    .range([ height, 0]);
+svg.append("g")
+    .call(d3.axisLeft(y));
 
-    data.push(result);
-    }
-    
-      var layout = {
-        showlegend: false,
-        height: 600,
-        width: 600,
-        xaxis: {
-          showline: true,
-          showgrid: false,
-          showticklabels: true,
-          linecolor: 'rgb(204,204,204)',
-          linewidth: 2,
-          autotick: false,
-          ticks: 'outside',
-          tickcolor: 'rgb(204,204,204)',
-          tickwidth: 2,
-          ticklen: 5,
-          tickfont: {
-            family: 'Arial',
-            size: 12,
-            color: 'rgb(82, 82, 82)'
-          }
-        },
-        yaxis: {
-          showgrid: true,
-          zeroline: false,
-          showline: true,
-          showticklabels: true
-        },
-        autosize: false,
-        margin: {
-          autoexpand: false,
-          l: 100,
-          r: 20,
-          t: 100
-        },
-        annotations: [
-          {
-            xref: 'paper',
-            yref: 'paper',
-            x: 0.0,
-            y: 1.05,
-            xanchor: 'left',
-            yanchor: 'bottom',
-            text: 'Number of Albums Rated 90 or Higher',
-            font:{
-              family: 'Arial',
-              size: 30,
-              color: 'rgb(37,37,37)'
-            },
-            showarrow: false
-          },
-          {
-            xref: 'paper',
-            yref: 'paper',
-            x: 0.5,
-            y: -0.1,
-            xanchor: 'center',
-            yanchor: 'top',
-            text: 'first text',
-            showarrow: false,
-            font: {
-              family: 'Arial',
-              size: 12,
-              color: 'rgb(150,150,150)'
-            }
-          }
-        ]
-      };
-      
-      for( var i = 0 ; i < xData.length ; i++ ) {
-        var result = {
-          xref: 'paper',
-          x: 0.05,
-          y: yData[i][0],
-          xanchor: 'right',
-          yanchor: 'middle',
-          // text: labels[i] + ' ' + yData[i][0] +'%',
-          showarrow: false,
-          font: {
-            family: 'Arial',
-            size: 16,
-            color: 'black'
-          }
-        };
-      
-        // layout.annotations.push(result);
-      }
-      
-      Plotly.newPlot('myDiv', data, layout);
-}
+// Lines
+svg.selectAll("myline")
+    .data(data)
+    .enter()
+    .append("line")
+    .attr("x1", function(d) { return x(d.Country); })
+    .attr("x2", function(d) { return x(d.Country); })
+    .attr("y1", function(d) { return y(d.Value); })
+    .attr("y2", y(0))
+    .attr("stroke", "grey")
+
+// Circles
+svg.selectAll("mycircle")
+    .data(data)
+    .enter()
+    .append("circle")
+    .attr("cx", function(d) { return x(d.Country); })
+    .attr("cy", function(d) { return y(d.Value); })
+    .attr("r", "4")
+    .style("fill", "#69b3a2")
+    .attr("stroke", "black")
+})

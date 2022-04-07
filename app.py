@@ -17,7 +17,7 @@ def db_conn():
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index1.html")
     
 
 @app.route('/get_init_data')
@@ -33,12 +33,12 @@ def get_init_data():
     conn.close()
     return jsonify(init_data)
     
-@app.route('/scrape')  
+# @app.route('/scrape')  
 
 
-@app.route('/gimme/<truck>/<car>')
-def gimme(car, truck):
-    return car
+# @app.route('/gimme/<truck>/<car>')
+# def gimme(car, truck):
+#     return car
 
 
 if __name__ == "__main__":

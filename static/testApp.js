@@ -51,8 +51,13 @@ function requestD3(url) {
         let body_html = "";
         for (let j = 0; j < data.length; j++) {
             let row_html = "<tr>"
-            row_html += `<td>${albums[j]}</td><td>${artists[j]}</td><td>${albumGenres[j]}</td><td>${years[j]}</td><td>${labels[j]}</td><td>${metaScores[j]}</td><td>${userScores[j]}</td>`;
-            console.log(row_html)
+            row_html += `<td>${albums[j]}</td>
+            <td>${artists[j]}</td>
+            <td>${albumGenres[j]}</td>
+            <td>${years[j]}</td>
+            <td>${labels[j]}</td>
+            <td>${metaScores[j]}</td>
+            <td>${userScores[j]}</td>`;
             row_html += "</tr>"
             body_html += row_html
         }
@@ -60,8 +65,11 @@ function requestD3(url) {
         $("#meta_table tbody").append(body_html);
 
         // add class
-        $("#meta_table").attr("class", "table table-striped table-hover");
-        $('#meta_table').DataTable();
+        table = $("#meta_table")
+        table.attr("class", "table table-striped table-hover");
+        table.DataTable();
+
+        
 
 
         createYearDropdown(uniqueYears)
@@ -79,3 +87,12 @@ function createYearDropdown(uniqueYears) {
         $("#yearSelect").append(html);
     }
 }
+
+Highcharts.chart('container', {
+    data: {
+        table: 'meta_table'
+    },
+    title: {
+        text: 'Data extracted from a HTML table in the page'
+    }
+});

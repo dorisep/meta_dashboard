@@ -22,7 +22,6 @@ def index():
 
 @app.route('/get_init_data')
 def get_init_data():
-    print("hi")
     conn = db_conn()
     cur = conn.cursor()
     init_command = queries_dict["init_query"]

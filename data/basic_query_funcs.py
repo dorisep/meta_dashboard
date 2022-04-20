@@ -13,7 +13,7 @@ def query_genre(genre):
     return command
 
 def init_index():
-    command = (f"select * from albums")
+    command = (f"select record_label, album, artist, album_genre, substr(date, -4) date, meta_score, user_score from albums")
     return command
     
 queries_dict = {

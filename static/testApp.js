@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    const url = "/get_init_data"
+    var url = "/get_init_data"
     getData(url);
 })
 
@@ -9,54 +9,9 @@ $.ajax({
     url: url,
     contentType: "application/json; charset=utf-8",
     success: function(data) {
-        let tableHeaders = ["Album", "Artist", "Genre", "Year", "Label", "Meta Score", "User Score"]
-        let artists = data.map(data => data.artist)
+      makeTable(data)
 
-        let metaScores = data.map(data => data.meta_score);
-        let userScores = data.map(data => data.user_score);
-        let albumGenres = data.map(data => data.album_genre);
-        let labels = data.map(data => data.record_label);
-        // parse years out of date released for drop down
-        let albums = data.map(data => data.album)
-        let years = data.map(data => data.date);
-        
-        
 
-        // build table
-        // table header
-        let header_html = "<tr>"
-        for (let i=0; i<tableHeaders.length; i++) {
-            col = tableHeaders[i];
-            header_html += `<th>${col}</th>`
-        }
-        header_html += "</tr>"
-
-        $("#meta_table thead").append(header_html);
-
-        // same thing, but for tbody
-        let body_html = "";
-        for (let j = 0; j < data.length; j++) {
-            let row_html = "<tr>"
-            row_html += `<td>${albums[j]}</td>
-            <td>${artists[j]}</td>
-            <td>${albumGenres[j]}</td>
-            <td>${years[j]}</td>
-            <td>${labels[j]}</td>
-            <td>${metaScores[j]}</td>
-            <td>${userScores[j]}</td>`;
-            row_html += "</tr>"
-            body_html += row_html
-        
-        }
-
-        $("#meta_table tbody").append(body_html);
-
-        // add class
-        var table = $("#meta_table").DataTable();
-
-        table.on( 'draw', function () {
-            getTableData(table);
-        } );
     },
     error: function(textStatus, errorThrown) {
         console.log("FAILED to get data");
@@ -67,6 +22,54 @@ $.ajax({
 });
 }
 
+function makeTable(data) {
+  let tableHeaders = ["Album", "Artist", "Genre", "Year", "Label", "Meta Score", "User Score"]
+  let artists = data.map(data => data.artist)
+
+  let metaScores = data.map(data => data.meta_score);
+  let userScores = data.map(data => data.user_score);
+  let albumGenres = data.map(data => data.album_genre);
+  let labels = data.map(data => data.record_label);
+  // parse years out of date released for drop down
+  let albums = data.map(data => data.album)
+  let years = data.map(data => data.date);
+
+  let header_html = "<tr>"
+  for (let i=0; i<tableHeaders.length; i++) {
+      col = tableHeaders[i];
+      header_html += `<th>${col}</th>`
+  }
+  header_html += "</tr>"
+
+  $("#meta_table thead").append(header_html);
+
+  // same thing, but for tbody
+  let body_html = "";
+  for (let j = 0; j < data.length; j++) {
+      let row_html = "<tr>"
+      row_html += `<td>${albums[j]}</td>
+      <td>${artists[j]}</td>
+      <td>${albumGenres[j]}</td>
+      <td>${years[j]}</td>
+      <td>${labels[j]}</td>
+      <td>${metaScores[j]}</td>
+      <td>${userScores[j]}</td>`;
+      row_html += "</tr>"
+      body_html += row_html
+  }
+
+  $("#meta_table tbody").append(body_html);
+
+  // add class
+  var table = $("#meta_table").DataTable();
+
+  table.on( 'draw', function () {
+      // alert( 'Table redrawn' );
+      console.log('you rang?')
+      getTableData(table);
+  });
+}
+  
 
 function getTableData(table) {
     const bubbleArray = []

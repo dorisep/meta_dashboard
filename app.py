@@ -17,7 +17,7 @@ def db_conn():
 
 @app.route("/")
 def index():
-    return render_template("index1.html")
+    return render_template("index.html")
     
 
 @app.route('/get_init_data')

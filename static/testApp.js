@@ -15,14 +15,17 @@ $(document).ready(function() {
 
 function doWork() {
     var url = "/get_init_data"
-    requestD3(url);
+    getData(url);
 
     console.log('do work called')
 }
 
-function requestD3(url) {
-    d3.json(url).then((data) => {
-        
+function getData(url){
+$.ajax({
+    type: "GET",
+    url: url,
+    contentType: "application/json; charset=utf-8",
+    success: function(data) {
         let tableHeaders = ["Album", "Artist", "Genre", "Year", "Label", "Meta Score", "User Score"]
         let artists = data.map(data => data.artist)
 
@@ -32,8 +35,8 @@ function requestD3(url) {
         let labels = data.map(data => data.record_label);
         // parse years out of date released for drop down
         let albums = data.map(data => data.album)
-        let years = data.map(data => data.date.slice(-4));
-        let uniqueYears = [...new Set(years)].sort();
+        let years = data.map(data => data.date);
+        
         
 
         // build table
@@ -61,38 +64,99 @@ function requestD3(url) {
             row_html += "</tr>"
             body_html += row_html
         }
-        console.log(body_html)
+
         $("#meta_table tbody").append(body_html);
 
         // add class
-        table = $("#meta_table")
-        table.attr("class", "table table-striped table-hover");
-        table.DataTable();
+        var table = $("#meta_table").DataTable();
 
-        
+        table.on( 'draw', function () {
+            // alert( 'Table redrawn' );
+            console.log('you rang?')
+            getTableData(table);
+        } );
+    },
+    error: function(textStatus, errorThrown) {
+        console.log("FAILED to get data");
+        console.log(textStatus);
+        console.log(errorThrown);
+    }
+    
+});
+}
 
 
-        createYearDropdown(uniqueYears)
+function getTableData(table) {
+    const bubbleArray = []
+ 
+    const yearArray = []
+        genreArray = [],
+        labelArray = [];
+    // console.log(table.rows)
+    // loop table rows
+    table.rows({ search: "applied" }).every(function() {
+        bubbleObj = {}
+        const filteredData = this.data();
+        yearArray.push(filteredData[3]);
+
     });
 
-}
+    
+    makeBar(yearArray)
 
+  }
 
-function createYearDropdown(uniqueYears) {
-    // parse out year from date property
+function makeBar(yearData) {
+    const barArray = [];
+    const count = {};
 
-    for (let i = 0; i < uniqueYears.length; i++) {
-        let year = uniqueYears[i];
-        let html = `<button type="button" class="btn btn-dark" value=${year}>${year}</button>`
-        $("#yearSelect").append(html);
+    for (const element of yearData) {
+    if (count[element]) {
+        count[element] += 1;
+    } else {
+        count[element] = 1;
     }
-}
-
-Highcharts.chart('container', {
-    data: {
-        table: 'meta_table'
-    },
-    title: {
-        text: 'Data extracted from a HTML table in the page'
     }
-});
+
+    Object.entries(count).forEach(([label,values])=>{
+        let tempArray = []
+        tempArray.push(label),
+        tempArray.push(values),
+        barArray.push(tempArray)
+        });
+    Highcharts.chart('container', {
+        chart: {
+          type: 'columnpyramid'
+        },
+        title: {
+          text: 'The 5 highest pyramids in the World'
+        },
+        colors: ['#808080', '#000000', '#FF0000'],
+        xAxis: {
+          crosshair: true,
+          labels: {
+            style: {
+              fontSize: '14px'
+            }
+          },
+          type: 'category'
+        },
+        yAxis: {
+          min: 0,
+          title: {
+            text: 'Height (m)'
+          }
+        },
+        tooltip: {
+          valueSuffix: ' m'
+        },
+        series: [{
+          name: 'Height',
+          colorByPoint: true,
+          data: barArray,
+          showInLegend: false
+        }]
+    });
+}
+    
+

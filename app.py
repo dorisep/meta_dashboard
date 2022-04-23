@@ -28,9 +28,9 @@ def get_init_data():
         # query db
     cur.execute(init_command)
     rows = cur.fetchall()
-    init_data = [{k: row[k] for k in row.keys()} for row in rows]
+    data = [{k: row[k] for k in row.keys()} for row in rows]
     conn.close()
-    return jsonify(init_data)
+    return jsonify(data)
     
 # @app.route('/scrape')  
 

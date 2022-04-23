@@ -1,24 +1,7 @@
 $(document).ready(function() {
-    doWork()
-})
-
-
-// $(document).ready(function() {
-//     console.log('page loaded');
-//     doWork();
-//     $('#table_id').DataTable();
-//     $("#yearSelected button").click(function() {
-//         console.log(this.value);
-//       });
-// });
-
-
-function doWork() {
-    var url = "/get_init_data"
+    const url = "/get_init_data"
     getData(url);
-
-    console.log('do work called')
-}
+})
 
 function getData(url){
 $.ajax({
@@ -63,6 +46,7 @@ $.ajax({
             <td>${userScores[j]}</td>`;
             row_html += "</tr>"
             body_html += row_html
+        
         }
 
         $("#meta_table tbody").append(body_html);
@@ -71,8 +55,6 @@ $.ajax({
         var table = $("#meta_table").DataTable();
 
         table.on( 'draw', function () {
-            // alert( 'Table redrawn' );
-            console.log('you rang?')
             getTableData(table);
         } );
     },
@@ -124,12 +106,14 @@ function makeBar(yearData) {
         tempArray.push(values),
         barArray.push(tempArray)
         });
-    Highcharts.chart('container', {
+    console.log('here comes the judge')
+    console.log(barArray)
+    Highcharts.chart('pointyChart', {
         chart: {
           type: 'columnpyramid'
         },
         title: {
-          text: 'The 5 highest pyramids in the World'
+          text: 'Number of albums by year'
         },
         colors: ['#808080', '#000000', '#FF0000'],
         xAxis: {

@@ -87,13 +87,13 @@ function getTableData(table) {
 
     });
 
-    makeScatter(table)
-        // makeBar(yearArray)
+    makeBar(yearArray)
+    makeScatterMeta()
 
 }
 
-function makeScatter(data) {
-    Highcharts.chart('scatterChart', {
+function makeScatterMeta() {
+    Highcharts.chart('scatterMeta', {
         chart: {
             type: 'scatter',
             zoomType: 'xy'

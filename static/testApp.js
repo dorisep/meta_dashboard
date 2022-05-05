@@ -18,10 +18,12 @@ function getData(url) {
     });
 }
 function makeTable(data) {
-    let tableHeaders = ["Album", "Artist", "Genre", "Year", "Label", "Meta Score", "User Score"]
+    let tableHeaders = ["Album", "Artist", "Genre", "Year", "Label", "Meta Score", "#Critic Reviews", "User Score", "#User Reviews"]
     let artists = data.map(data => data.artist)
     let metaScores = data.map(data => data.meta_score);
+    let critNum = data.map(data => data.crit_rev_num);
     let userScores = data.map(data => data.user_score);
+    let userNum = data.map(data => data.user_rev_num);
     let albumGenres = data.map(data => data.album_genre);
     let labels = data.map(data => data.record_label);
     // parse years out of date released for drop down
@@ -44,7 +46,9 @@ function makeTable(data) {
       <td>${years[j]}</td>
       <td>${labels[j]}</td>
       <td>${metaScores[j]}</td>
-      <td>${userScores[j]}</td>`;
+      <td>${critNum[j]}</td>
+      <td>${userScores[j]}</td>
+      <td>${userNum[j]}</td>`;
         row_html += "</tr>"
         body_html += row_html
     }
@@ -67,7 +71,8 @@ function getTableData(table) {
     table.rows({ search: "applied" }).every(function() {
         bubbleObj = {}
         const filteredData = this.data();
-        console.log(filteredData)
+        console.log('data done been filtered')
+        console.log(filteredData[5], filteredData[6])
         yearArray.push(filteredData[3]);
     });
     makeBar(yearArray)
@@ -99,16 +104,6 @@ function makeScatterUser() {
             title: {
                 text: 'Weight (kg)'
             }
-        },
-        legend: {
-            layout: 'vertical',
-            align: 'left',
-            verticalAlign: 'top',
-            x: 100,
-            y: 70,
-            floating: true,
-            backgroundColor: Highcharts.defaultOptions.chart.backgroundColor,
-            borderWidth: 1
         },
         plotOptions: {
             scatter: {
@@ -171,16 +166,7 @@ function makeScatterMeta() {
                 text: 'Weight (kg)'
             }
         },
-        legend: {
-            layout: 'vertical',
-            align: 'left',
-            verticalAlign: 'top',
-            x: 100,
-            y: 70,
-            floating: true,
-            backgroundColor: Highcharts.defaultOptions.chart.backgroundColor,
-            borderWidth: 1
-        },
+
         plotOptions: {
             scatter: {
                 marker: {

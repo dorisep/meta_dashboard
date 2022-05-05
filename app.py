@@ -30,15 +30,8 @@ def get_init_data():
     rows = cur.fetchall()
     data = [{k: row[k] for k in row.keys()} for row in rows]
     conn.close()
+    print(data[0])
     return jsonify(data)
-    
-# @app.route('/scrape')  
-
-
-# @app.route('/gimme/<truck>/<car>')
-# def gimme(car, truck):
-#     return car
-
-
+ 
 if __name__ == "__main__":
     app.run(debug=True)

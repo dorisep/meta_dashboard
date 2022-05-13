@@ -8,7 +8,7 @@ app = Flask(__name__)
 def db_conn():
     conn = None
     try:
-        conn = sqlite3.connect('meta_music.db')
+        conn = sqlite3.connect("meta_music.db")
         conn.row_factory = sqlite3.Row    
     except sqlite3.Error as e:
         print(e)

@@ -1,5 +1,8 @@
+
+
 // from data.js
 d3.json("/get_init_data", function (data) {
+    console.log(data)
     buildTable(data)
    })
 
@@ -7,44 +10,19 @@ d3.json("/get_init_data", function (data) {
 var tbody = d3.select("tbody");
 
 function buildTable(data) {
-    let tableHeaders = ["Album", "Artist", "Genre", "Year", "Label", "Meta Score", "#Critic Reviews", "User Score", "#User Reviews"]
-    let artists = data.map(data => data.artist)
-    let metaScores = data.map(data => data.meta_score);
-    let albumGenres = data.map(data => data.album_genre);
-    let labels = data.map(data => data.record_label);
-    // parse years out of date released for drop down
-    let albums = data.map(data => data.album)
-    let years = data.map(data => data.date);
 
-  // First, clear out any existing data
     tbody.html("");
-  // Next, loop through each object in the data
-  // and append a row and cells for each value in the row
-    let body_html = ""
-    // Append a row to the table body
-    
 
-    // Loop through each field in the dataRow and add
-    // each value as a table cell (td)
-    for (let i = 0; i < data.length; i++) {
-        let textArray = [albums[i], artists[i], albumGenres[i], labels[i], metaScores[i]]
+    let body_html = ""
+
+    data.forEach(record => {
+        let textArray = [record.date, record.album, record.artist, record.album_genre, record.record_label, record.meta_score]
         let row = tbody.append("tr")
         for (let j = 0; j < textArray.length; j++) {
             cell = row.append("td")
-            // console.log()
             cell.text(`${textArray[j]}`)
         }
-        
-
-    //     row_html += `<td>${albums[j]}</td>
-    //   <td>${artists[j]}</td>
-    //   <td>${albumGenres[j]}</td>
-    //   <td>${years[j]}</td>
-    //   <td>${labels[j]}</td>
-    //   <td>${metaScores[j]}</td>`;
-    //     row_html += "</tr>"
-    //     body_html += row_html
-    };
+    });
     tbody.append(body_html)
 }
 
@@ -62,7 +40,7 @@ function updateFilters() {
   let elementValue = changedElement.property("value");
   // 4c. Save the id of the filter that was changed as a variable.
   let filterId = changedElement.attr("id");
-
+  console.log(filterId)
   // 5. If a filter value was entered then add that filterId and value
   // to the filters list. Otherwise, clear that filter from the filters object.
   if (elementValue) {

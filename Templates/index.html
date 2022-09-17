@@ -49,24 +49,24 @@
                 <p>Search</p>
                 <ul class="list-group">
                   <li class="list-group-item bg-light">
-                    <label for="date">By Date</label>
-                    <input type="text" placeholder="1/10/2010" id="datetime" />
+                    <label for="years">By Date</label>
+                    <input type="years" placeholder="2002" id="years" />
                   </li>
                   <li class="list-group-item bg-light">
-                    <label for="city">by Artist</label>
-                    <input type="text" id="city" class="form-control" placeholder="roswell" />
+                    <label for="artists">by Artist</label>
+                    <input type="text" id="artists" class="form-control" placeholder="Beck" />
                   </li>
                   <li class="list-group-item bg-light">
-                    <label for="state">by Genre</label>
-                    <input type="text" id="state" class="form-control" placeholder="ca" />
+                    <label for="albumGenres">by Genre</label>
+                    <input type="text" id="albumGenres" class="form-control" placeholder="rock" />
                   </li>
                   <li class="list-group-item bg-light">
-                    <label for="country">by Record Label</label>
-                    <input type="text" id="country" class="form-control" placeholder="us" />
+                    <label for="labels">by Record Label</label>
+                    <input type="text" id="labels" class="form-control" placeholder="Geffen" />
                   </li>
                   <li class="list-group-item bg-light">
-                    <label for="shape">by Critic Scores</label>
-                    <input type="text" id="shape" class="form-control" placeholder="circle" />
+                    <label for="metaScores">by Critic Scores</label>
+                    <input type="text" id="metaScores" class="form-control" placeholder="circle" />
                   </li>
                 </ul>
               </form>
@@ -78,6 +78,7 @@
             <table id="meta_table" class="table table-striped">
               <thead>
                 <tr>
+                  <th>Year</th>
                   <th>Album</th>
                   <th>Artist</th>
                   <th>Genre</th>

@@ -18,10 +18,10 @@ function buildTable(data) {
     data.forEach(record => {
         let textArray = [record.date, record.album, record.artist, record.album_genre, record.record_label, record.meta_score]
         let row = tbody.append("tr")
-        for (let j = 0; j < textArray.length; j++) {
-            cell = row.append("td")
-            cell.text(`${textArray[j]}`)
-        }
+        textArray.forEach(val => {
+            cell = row.append("td");
+            cell.text(val)
+        });
     });
     tbody.append(body_html)
 }

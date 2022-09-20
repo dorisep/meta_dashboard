@@ -1,11 +1,10 @@
-let tableData 
+let musicData 
 
 // from data.js
 d3.json("/get_init_data", function (data) {
-    tableData = data;
-    buildTable(data)
-   })
-console.log(tab)
+    musicData = data;
+    buildTable(data);
+})
 // get table references
 var tbody = d3.select("tbody");
 
@@ -30,7 +29,7 @@ var filters = {};
 // 3. Create a function that updates the filters. 
 
 function updateFilters() {
-
+    console.log('hey')
   // 4a. Create a variable that saves the element that was changed using d3.select().
   let changedElement = d3.select(this);
   // 4b. Save the value that was changed as a variable.
@@ -45,7 +44,7 @@ function updateFilters() {
   else {
     delete filters[filterId];
   }
-
+  console.log(filters[filterId])
   // 6. Call function to apply all filters and rebuild the table
   filterTable();
 
@@ -54,10 +53,9 @@ function updateFilters() {
 
 // 7. Create a function that filters the table when data is entered.
 function filterTable() {
-
+    console.log('ho')
   // 8. Set the filtered data to the tableData.
-  let filteredData = data;
-
+  let filteredData = musicData;
   // 9. Loop through all of the filters and keep any data that
   // matches the filter values
   Object.entries(filters).forEach(([key, value]) => {
@@ -65,9 +63,10 @@ function filterTable() {
   });
   tbody.html("");
   let body_html = ""
-  data.forEach(record => {
+  filteredData.forEach(record => {
       let textArray = [record.date, record.album, record.artist, record.album_genre, record.record_label, record.meta_score];
       let row = tbody.append("tr");
+      console.log(textArray)
       textArray.forEach(val => {
           cell = row.append("td");
           cell.text(val);
@@ -80,6 +79,3 @@ function filterTable() {
 
 // 2. Attach an event to listen for changes to each filter
 d3.selectAll("input").on("change", updateFilters);
-
-// Build the table when the page loads
-buildTable(tableData);

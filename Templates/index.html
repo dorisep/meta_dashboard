@@ -19,33 +19,13 @@
             </div>
         </div>
     </div>
-
-    <div class="container-fluid">
-        <div class="row">
-            <figure class="highcharts-figure col-md-12">
-                <div id="pointyChart"></div>
-
-            </figure>
-        </div>
-        <div class="container-fluid">
-            <div class="row">
-                <figure class="highcharts-figure col-md-6">
-                    <div id="scatterMeta"></div>
-                </figure>
-
-                <figure class="highcharts-figure col-md-6">
-                    <div id="scatterUser"></div>
-                </figure>
-            </div>
-        </div>
-
          <!-- Filter -->
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-3">
             <div class="filters">
               <form class="bg-light">
-                <p>Search</p>
+                <p class="border rounded-top mb-0">Search</p>
                 <ul class="list-group">
                   <li class="list-group-item bg-light">
                     <label for="date">By Date</label>
@@ -73,7 +53,12 @@
           </div>
 
           <!-- Table -->
-          <div class="col-md-9">
+          <div class="col-md-9" id="my_dataviz_bar">
+            
+          </div>
+        </div>
+        <div class="row">
+         <div class="col-md-12">
             <table id="meta_table" class="table table-striped">
               <thead>
                 <tr>
@@ -85,13 +70,11 @@
                   <th>MetaScore</th>
                 </tr>
               </thead>
-              <tbody id="tbody"></tbody>
+              <tbody id="tbody" class = "overflow-auto"></tbody>
             </table>
           </div>
-        </div>
+        </div> 
       </div>
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.7/d3.min.js"></script> -->
-
       <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.js"></script>
       <script src="static/js/data.js"></script>
       <script src="static/js/app.js"></script>

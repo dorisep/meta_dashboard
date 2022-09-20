@@ -1,10 +1,18 @@
 from flask import Flask, render_template, jsonify, redirect, url_for
+from flask_caching import Cache
 import sqlite3
 from data.basic_query_funcs import queries_dict
 import datetime
 
-app = Flask(__name__)
+config = {
+    "DEBUG": True,          # some Flask specific configs
+    "CACHE_TYPE": "SimpleCache",  # Flask-Caching related configs
+    "CACHE_DEFAULT_TIMEOUT": 300
+}
 
+app = Flask(__name__)
+app.config.from_mapping(config)
+cache = Cache(app)
 def db_conn():
     conn = None
     try:
@@ -34,4 +42,4 @@ def get_init_data():
     return jsonify(data)
  
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()

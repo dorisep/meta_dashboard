@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify, redirect, url_for
-from flask_caching import Cache
+# from flask_caching import Cache
 import sqlite3
 from data.basic_query_funcs import queries_dict
 import datetime
@@ -11,8 +11,8 @@ config = {
 }
 
 app = Flask(__name__)
-app.config.from_mapping(config)
-cache = Cache(app)
+# app.config.from_mapping(config)
+# cache = Cache(app)
 def db_conn():
     conn = None
     try:

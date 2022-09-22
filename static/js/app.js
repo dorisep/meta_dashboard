@@ -62,15 +62,40 @@ var svg = d3.select("#my_dataviz_bar")
     .append("g")
     .attr("transform",
         "translate(" + margin.left + "," + margin.top + ")");
-
+function filterScores(score) {
+    if(score > 90) {
+        console.log(score)
+    }
+}
 function drawBarChart(bData) {
-    console.log('----drawBarChart called----')
-    let countByDates = bData.reduce((resultSet, item) => ({
-        ...resultSet,
-        [item.date]: (resultSet[item.date] || 0) + 1,
-    }), {});
 
-    console.log(countByDates);
+    console.log('----drawBarChart called----')
+    binScoresByYear = {}
+    let currentYear
+    for (i=0; i < bData.length; i++){
+        console.log(binScoresByYear)      
+        if (typeof currentYear === 'undefined') {
+            currentYear = bData[i].date
+            binScoresByYear[currentYear] = {}
+
+        }else if(bData[i].date !== currentYear) {
+            currentYear = bData[i].date
+            console.log(`elif ${currentYear}`)
+            binScoresByYear[currentYear] = {}
+        }else{
+            console.log('else')
+            // binScoresByYear[currentYear] 
+        }
+    }
+
+    // let sortedScores = bData.filter((record)=>{
+    //     console.log(record.meta_score)
+    // })
+    // let countByDates = bData.reduce((resultSet, item) => ({
+    //     ...resultSet,
+    //     [item.date]: (resultSet[item.date] || 0) + 1,
+    // }), {});
+
 
     // let textArray = [record.date, record.album, record.artist, record.album_genre, record.record_label, record.meta_score];
 
@@ -79,7 +104,7 @@ function drawBarChart(bData) {
     //     cell.text(val);
     // });
 };
-console.log(dateArray)
+// console.log(dateArray)
     //     // Parse the Data
 
 //     // List of subgroups = header of the csv files = soil condition here

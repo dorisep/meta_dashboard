@@ -46,8 +46,9 @@ function filterTable() {
     });
 
     buildTable(filteredData);
+    drawBarChart(filteredData);
 }
-d3.selectAll("input").on("change", updateFilters);
+
 
 
 // barchart link:https://d3-graph-gallery.com/graph/barplot_stacked_basicWide.html
@@ -66,6 +67,7 @@ var svg = d3.select("#my_dataviz_bar")
         "translate(" + margin.left + "," + margin.top + ")");
 
 function filterScores(score) {
+    // filters scores in ranges
     console.log('-----filterScores------')
 
     if(score >= 90) {
@@ -79,13 +81,14 @@ function filterScores(score) {
         return "60s"
     }
 }
-function drawBarChart(bData) {
-    console.log('----drawBarChart called----')
-    binScoresByYear = {}
-    let count = 0
-    for (i=0; i < bData.length; i++){
-        let currentYear = bData[i].date
-        let bin = filterScores(bData[i].meta_score)
+let binScoresByYear
+function parseDataBar(data){
+    // parse data into an object containing years and range of scores as keys with counts as values
+    binScoresByYear = {};
+    let count = 0;
+    for (i=0; i < data.length; i++){
+        let currentYear = data[i].date
+        let bin = filterScores(data[i].meta_score)
         if (typeof binScoresByYear[currentYear] === 'undefined') {
             binScoresByYear[currentYear] = {}            
             binScoresByYear[currentYear][bin] = 1
@@ -93,9 +96,13 @@ function drawBarChart(bData) {
             binScoresByYear[currentYear][bin] = 1
         }else{
             binScoresByYear[currentYear][bin] += 1
-        }
-        
+        }        
     }
+}
+
+function drawBarChart(bData) {
+    console.log('----drawBarChart called----')
+    parseDataBar(bData)
     // for (const [key, value] of Object.entries(binScoresByYear)) {
     //     console.log(`${key}: ${value}`);
     //   }
@@ -166,3 +173,5 @@ function drawBarChart(bData) {
 //         .attr("height", function(d) { return y(d[0]) - y(d[1]); })
 //         .attr("width", x.bandwidth())
 //         // })
+// event listeners
+d3.selectAll("input").on("change", updateFilters);

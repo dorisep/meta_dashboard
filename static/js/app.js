@@ -62,32 +62,49 @@ var svg = d3.select("#my_dataviz_bar")
     .append("g")
     .attr("transform",
         "translate(" + margin.left + "," + margin.top + ")");
+
 function filterScores(score) {
-    if(score > 90) {
-        console.log(score)
+    console.log('-----filterScores------')
+
+    if(score >= 90) {
+        bin = "90s"
+        return bin
+    }else if(score<90 && score>=80){
+        return "80s"
+    }else if(score<80 && score>=70){
+        return "70s"
+    }else{
+        return "60s"
     }
 }
 function drawBarChart(bData) {
-
     console.log('----drawBarChart called----')
     binScoresByYear = {}
-    let currentYear
-    for (i=0; i < bData.length; i++){
-        console.log(binScoresByYear)      
-        if (typeof currentYear === 'undefined') {
-            currentYear = bData[i].date
-            binScoresByYear[currentYear] = {}
+    for (i=0; i < 500; i++){
+        console.log('gidddy up loop!')
+        let currentYear = bData[i].date
+        // console.log(currentYear)
+        let bin = filterScores(bData[i].meta_score)
+        console.log(bin)
+        console.log(binScoresByYear[currentYear] === 'undefined')
+        if (typeof binScoresByYear[currentYear] ==='undefined') {
+            binScoresByYear[currentYear] = {}            
+            binScoresByYear[currentYear][bin] = 1
+            console.log(11111)
+            console.log(typeof binScoresByYear[currentYear] === 'undefined')
+            console.log(22222)
+            console.log(typeof binScoresByYear[currentYear][bin] === 'undefined')
 
-        }else if(bData[i].date !== currentYear) {
-            currentYear = bData[i].date
-            console.log(`elif ${currentYear}`)
-            binScoresByYear[currentYear] = {}
-        }else{
-            console.log('else')
-            // binScoresByYear[currentYear] 
         }
+        
+        // }else{
+        //     console.log('else')
+        //     binScoresByYear[currentYear][bin] += 1
+        // }
     }
-
+    // for (const [key, value] of Object.entries(binScoresByYear)) {
+    //     console.log(`${key}: ${value}`);
+    //   }
     // let sortedScores = bData.filter((record)=>{
     //     console.log(record.meta_score)
     // })

@@ -1,5 +1,7 @@
 let musicData
 
+let testData = 
+
 d3.json("/get_init_data", function(data) {
         musicData = data;
         buildTable(data);
@@ -80,27 +82,19 @@ function filterScores(score) {
 function drawBarChart(bData) {
     console.log('----drawBarChart called----')
     binScoresByYear = {}
-    for (i=0; i < 500; i++){
-        console.log('gidddy up loop!')
+    let count = 0
+    for (i=0; i < bData.length; i++){
         let currentYear = bData[i].date
-        // console.log(currentYear)
         let bin = filterScores(bData[i].meta_score)
-        console.log(bin)
-        console.log(binScoresByYear[currentYear] === 'undefined')
-        if (typeof binScoresByYear[currentYear] ==='undefined') {
+        if (typeof binScoresByYear[currentYear] === 'undefined') {
             binScoresByYear[currentYear] = {}            
             binScoresByYear[currentYear][bin] = 1
-            console.log(11111)
-            console.log(typeof binScoresByYear[currentYear] === 'undefined')
-            console.log(22222)
-            console.log(typeof binScoresByYear[currentYear][bin] === 'undefined')
-
+        }else if(typeof binScoresByYear[currentYear][bin] === 'undefined'){
+            binScoresByYear[currentYear][bin] = 1
+        }else{
+            binScoresByYear[currentYear][bin] += 1
         }
         
-        // }else{
-        //     console.log('else')
-        //     binScoresByYear[currentYear][bin] += 1
-        // }
     }
     // for (const [key, value] of Object.entries(binScoresByYear)) {
     //     console.log(`${key}: ${value}`);

@@ -10,12 +10,7 @@ let musicData
 // .attr("width",x.bandwidth())
 
 
-// subgroups = ['Nitrogen', 'normal', 'stress']
-// groups =  ['banana', 'poacee', 'sorgho', 'triticum']
-// stackedData = 0
-// [[0, 12], [0, 6], [0, 11], [0, 19], key: 'Nitrogen', index: 0]
-// [[12,13], [6, 12], [11, 39], [19, 25], key: 'normal', index: 1]
-// [[13, 26], [12, 45], [39, 51], [25, 26], key: 'stress', index: 2]
+// color = ƒ n(n){var o=n+"",u=e.get(o);if(!u){if(i!==yv)return i;e.set(o,u=r.push(n))}return t[(u-1)%t.length]}
 d3.json("/get_init_data", function(data) {
         musicData = data;
         buildTable(data);
@@ -68,8 +63,8 @@ function filterTable() {
 // barchart link:https://d3-graph-gallery.com/graph/barplot_stacked_basicWide.html
 // set the dimensions and margins of the graph
 var margin = { top: 10, right: 30, bottom: 20, left: 50 },
-    width = 460 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+    width = 920 - margin.left - margin.right,
+    height = 800 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
 var svg = d3.select("#my_dataviz_bar")
@@ -112,7 +107,6 @@ function parseDataBar(data) {
         } else {
             binScoresByYear[currentYear][bin] += 1;
         }
-
     }
     return binScoresByYear
 }
@@ -123,6 +117,7 @@ let stackedData
 
 function makeBarArray(obj) {
     let anArray = []
+    let keyArray = []
     for (const key of Object.keys(chartDataObj)) {
         anArray.push(chartDataObj[`${key}`])
     }
@@ -132,19 +127,20 @@ function makeBarArray(obj) {
 function fillInMissingSubgroups() {
 
 }
-let meh
-let myStack
 
 function drawBarChart(bData) {
+    svg.html("")
     console.log('----drawBarChart called----')
     chartDataObj = parseDataBar(bData)
-    meh = makeBarArray(chartDataObj)
+    data = makeBarArray(chartDataObj)
+    data['columns'] = Object.keys(data[0])
+        // List of subgroups = header of the csv files = soil condition here
+    var subgroups = data.columns.slice(1)
 
+    // List of groups = species here = value of the first column called group -> I show them on the X axis
+    var groups = d3.map(data, function(d) { return (d.year) }).keys()
 
-    groups = Object.keys(chartDataObj)
-        // for x
-    subgroups = (Object.keys(chartDataObj[groups[0]]).slice(1))
-        // Add X axis
+    // Add X axis
     var x = d3.scaleBand()
         .domain(groups)
         .range([0, width])
@@ -155,7 +151,7 @@ function drawBarChart(bData) {
 
     // Add Y axis
     var y = d3.scaleLinear()
-        .domain([0, 60])
+        .domain([0, 510])
         .range([height, 0]);
     svg.append("g")
         .call(d3.axisLeft(y));
@@ -163,14 +159,14 @@ function drawBarChart(bData) {
     // color palette = one color per subgroup
     var color = d3.scaleOrdinal()
         .domain(subgroups)
-        .range(['#F43108 ', '#FED4CB ', '#9E9B9A', '#000000'])
+        .range(['#fc0505', '#828282', '#fa6969', '#000000'])
 
     //stack the data? --> stack per subgroup
-    stackedData = d3.stack()
+    var stackedData = d3.stack()
         .keys(subgroups)
-        (meh)
-    myStack = stackedData
-        // Show the bars
+        (data)
+
+    // Show the bars
     svg.append("g")
         .selectAll("g")
         // Enter in the stack data = loop key per key = group per group

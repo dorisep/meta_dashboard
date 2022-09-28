@@ -4,8 +4,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Metascrape Analysis</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-
-    <!-- <link rel="stylesheet" href="static/css/style.css" /> -->
+    <!-- <link rel="stylesheet" href="../static/css/style.css" /> -->
 
 
 </head>
@@ -19,63 +18,60 @@
             </div>
         </div>
     </div>
-         <!-- Filter -->
-      <div class="container-fluid">
+    <!-- Filter -->
+    <div class="container-fluid">
         <div class="row">
-          <div class="col-md-3">
-            <div class="filters">
-              <form class="bg-light">
-                <p class="border rounded-top mb-0">Search</p>
-                <ul class="list-group">
-                  <li class="list-group-item bg-light">
-                    <label for="date">By Date</label>
-                    <input type="integer" placeholder="2002" id="date" />
-                  </li>
-                  <li class="list-group-item bg-light">
-                    <label for="artist">by Artist</label>
-                    <input type="text" id="artist" class="form-control" placeholder="Beck" />
-                  </li>
-                  <li class="list-group-item bg-light">
-                    <label for="album_genre">by Genre</label>
-                    <input type="text" id="album_genre" class="form-control" placeholder="rock" />
-                  </li>
-                  <li class="list-group-item bg-light">
-                    <label for="label">by Record Label</label>
-                    <input type="text" id="label" class="form-control" placeholder="Geffen" />
-                  </li>
-                  <li class="list-group-item bg-light">
-                    <label for="meta_score">by Critic Scores</label>
-                    <input type="text" id="meta_score" class="form-control" placeholder="circle" />
-                  </li>
-                </ul>
-              </form>
+            <div class="col-md-3">
+                <div class="filters">
+                    <form class="bg-light">
+                        <p class="border rounded-top mb-0">Search</p>
+                        <ul class="list-group">
+                            <li class="list-group-item bg-light">
+                                <label for="date">By Date</label>
+                                <input type="integer" placeholder="2002" id="date" />
+                            </li>
+                            <li class="list-group-item bg-light">
+                                <label for="artist">by Artist</label>
+                                <input type="text" id="artist" class="form-control" placeholder="Beck" />
+                            </li>
+                            <li class="list-group-item bg-light">
+                                <label for="album_genre">by Genre</label>
+                                <input type="text" id="album_genre" class="form-control" placeholder="rock" />
+                            </li>
+                            <li class="list-group-item bg-light">
+                                <label for="label">by Record Label</label>
+                                <input type="text" id="label" class="form-control" placeholder="Geffen" />
+                            </li>
+                            <li class="list-group-item bg-light">
+                                <label for="meta_score">by Critic Scores</label>
+                                <input type="text" id="meta_score" class="form-control" placeholder="circle" />
+                            </li>
+                        </ul>
+                    </form>
+                </div>
             </div>
-          </div>
 
-          <!-- Table -->
-          <div class="col-md-9" id="my_dataviz_bar">
-            
-          </div>
+            <div class="col-md-9" id="my_dataviz_bar">
+
+            </div>
         </div>
-        <div class="row">
-         <div class="col-md-12">
-            <table id="meta_table" class="table table-striped">
-              <thead>
-                <tr>
-                  <th>Year</th>
-                  <th>Album</th>
-                  <th>Artist</th>
-                  <th>Genre</th>
-                  <th>Label</th>
-                  <th>MetaScore</th>
-                </tr>
-              </thead>
-              <tbody id="tbody" class = "overflow-auto"></tbody>
+        <div class="col-md-12">
+            <table id="meta_table" class="table table-bordered table-striped mb-0 overflow-auto">
+                <thead>
+                    <tr>
+                        <th>Year</th>
+                        <th>Album</th>
+                        <th>Artist</th>
+                        <th>Genre</th>
+                        <th>Label</th>
+                        <th>MetaScore</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody" class="overflow-auto"></tbody>
             </table>
-          </div>
-        </div> 
-      </div>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.js"></script>
-      <!-- <script src="static/js/data.js"></script> -->
-      <script src="static/js/app.js"></script>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.js"></script>
+    <!-- <script src="static/js/data.js"></script> -->
+    <script src="static/js/app.js"></script>
 </body>

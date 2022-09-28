@@ -22,6 +22,7 @@ function buildTable(tData) {
 var filters = {};
 // updateFilters called by event listener for forms
 function updateFilters() {
+    console.log('--updateFilters called--')
     let changedElement = d3.select(this);
     let elementValue = changedElement.property("value");
     let filterId = changedElement.attr("id");
@@ -30,14 +31,15 @@ function updateFilters() {
     } else {
         delete filters[filterId];
     }
-    console.log(filters[filterId])
     filterTable();
 }
 // table filter and rebuild - called by updatedfilters
 function filterTable() {
     let filteredData = musicData;
+    console.log(filters)
     Object.entries(filters).forEach(([key, value]) => {
-        filteredData = filteredData.filter(row => row[key] === value);
+        console.log(key, value)
+        filteredData = filteredData.filter(row => row[key] == value);
     });
 
     buildTable(filteredData);

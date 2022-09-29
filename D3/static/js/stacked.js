@@ -1,15 +1,5 @@
 let musicData
 
-// LINE 164 
-// d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_stacked.csv", function(data) {
-// CHECK THE RETURNS OF EACH LINE
-//   .enter().append("rect")
-// .attr("x", function(d) { return x(d.data.group); })
-// .attr("y", function(d) { return y(d[1]); })
-// .attr("height", function(d) { return y(d[0]) - y(d[1]); })
-// .attr("width",x.bandwidth())
-
-
 // color = ƒ n(n){var o=n+"",u=e.get(o);if(!u){if(i!==yv)return i;e.set(o,u=r.push(n))}return t[(u-1)%t.length]}
 d3.json("/get_init_data", function(data) {
         musicData = data;

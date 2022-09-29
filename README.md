@@ -2,8 +2,11 @@
 # to-do
 
 - add visualizations
-    - scores by year and number(bar)
-    - album by artists sized by score(bubble)
+    - handle variations caused by filters on data
+        - assigning colors when amount and types of bins vary
+        - switching to regular bar chart when selecting one year or score bins
+            - xticks = bins(date) or years(meta_score)
+        - 
     
 - add features to search
     - range in dates

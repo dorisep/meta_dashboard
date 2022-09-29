@@ -39,6 +39,11 @@ function updateFilters() {
     let changedElement = d3.select(this);
     let elementValue = changedElement.property("value");
     let filterId = changedElement.attr("id");
+    if (filterId === "meta_score") {
+        console.log("--filterId=meta_score")
+        console.log(filterId)
+        console.log(elementValue)
+    }
     if (elementValue) {
         console.log(elementValue)
         console.log(typeof elementValue)

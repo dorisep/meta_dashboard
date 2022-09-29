@@ -63,8 +63,8 @@ function filterTable() {
 // barchart link:https://d3-graph-gallery.com/graph/barplot_stacked_basicWide.html
 // set the dimensions and margins of the graph
 var margin = { top: 10, right: 30, bottom: 20, left: 50 },
-    width = 920 - margin.left - margin.right,
-    height = 800 - margin.top - margin.bottom;
+    width = 800 - margin.left - margin.right,
+    height = 600 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
 var svg = d3.select("#my_dataviz_bar")
@@ -135,7 +135,7 @@ function drawBarChart(bData) {
     data = makeBarArray(chartDataObj)
     data['columns'] = Object.keys(data[0])
         // List of subgroups = header of the csv files = soil condition here
-    subgroups = data.columns.slice(1)
+    var subgroups = data.columns.slice(1)
 
     // List of groups = species here = value of the first column called group -> I show them on the X axis
     var groups = d3.map(data, function(d) { return (d.year) }).keys()
@@ -159,7 +159,7 @@ function drawBarChart(bData) {
     // color palette = one color per subgroup
     var color = d3.scaleOrdinal()
         .domain(subgroups)
-        .range(['#fc0505', '#828282', '#fa6969', '#000000'])
+        .range(['#fc0505', '#828282', '#C5C5C5', '#000000'])
 
     //stack the data? --> stack per subgroup
     var stackedData = d3.stack()

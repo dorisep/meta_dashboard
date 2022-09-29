@@ -108,8 +108,7 @@ function filterScores(score) {
     console.log('-----filterScores------')
 
     if (score >= 90) {
-        bin = "90s"
-        return bin
+        return "90s"
     } else if (score < 90 && score >= 80) {
         return "80s"
     } else if (score < 80 && score >= 70) {

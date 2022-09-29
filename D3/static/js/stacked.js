@@ -34,6 +34,28 @@ function buildTable(tData) {
 }
 // start of code for filters
 var filters = {};
+// moved filtertable functions up-
+// table filter and rebuild - called by updatedfilters
+function filterTableNotScore() {
+    let filteredData = musicData;
+    Object.entries(filters).forEach(([key, value]) => {
+        filteredData = filteredData.filter(row => row[key] === value);
+    });
+
+    buildTable(filteredData);
+    drawBarChart(filteredData);
+}
+
+function filterTableScore() {
+    let filteredData = musicData;
+    Object.entries(filters).forEach(([key, value]) => {
+        filteredData = filteredData.filter(row => row[key] >= value);
+    });
+
+    buildTable(filteredData);
+    drawBarChart(filteredData);
+}
+
 // updateFilters called by event listener for forms
 function updateFilters() {
     let changedElement = d3.select(this);
@@ -43,7 +65,9 @@ function updateFilters() {
     if (filterId === "meta_score") {
         console.log(`--filterId=${filterId}--`)
         console.log(filterId)
-        console.log(elementValue)
+        elementValue = parseInt(elementValue)
+        filters[filterId] = elementValue;
+        filterTableScore()
     } else if (filterId === "date") {
         console.log(`--filterId=${filterId}--`)
         console.log(filterId)
@@ -61,20 +85,8 @@ function updateFilters() {
         delete filters[filterId];
     }
     console.log(filters[filterId])
-    filterTable();
+        // filterTable();
 }
-// table filter and rebuild - called by updatedfilters
-function filterTable() {
-    let filteredData = musicData;
-    Object.entries(filters).forEach(([key, value]) => {
-        filteredData = filteredData.filter(row => row[key] === value);
-    });
-
-    buildTable(filteredData);
-    drawBarChart(filteredData);
-}
-
-
 
 // barchart link:https://d3-graph-gallery.com/graph/barplot_stacked_basicWide.html
 // set the dimensions and margins of the graph

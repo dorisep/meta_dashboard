@@ -21,7 +21,3 @@ tr {
     display: table;
     table-layout: fixed;
 }
-
-.spacer {
-    max-height: 400px;
-}

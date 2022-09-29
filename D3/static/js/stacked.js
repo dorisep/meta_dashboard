@@ -40,6 +40,8 @@ function updateFilters() {
     let elementValue = changedElement.property("value");
     let filterId = changedElement.attr("id");
     if (elementValue) {
+        console.log(elementValue)
+        console.log(typeof elementValue)
         filters[filterId] = elementValue;
     } else {
         delete filters[filterId];

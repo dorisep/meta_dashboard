@@ -1,12 +1,13 @@
 let musicData
-
-// color = ƒ n(n){var o=n+"",u=e.get(o);if(!u){if(i!==yv)return i;e.set(o,u=r.push(n))}return t[(u-1)%t.length]}
+let filteredData
+let changedElement
+let elementValue
+let filterId
+    // color = ƒ n(n){var o=n+"",u=e.get(o);if(!u){if(i!==yv)return i;e.set(o,u=r.push(n))}return t[(u-1)%t.length]}
 d3.json("/get_init_data", function(data) {
         musicData = data;
         buildTable(data);
-        drawBarChart(data);
-
-
+        drawStackedChart(data);
     })
     // start of code for table
 var tbody = d3.select("tbody");
@@ -27,55 +28,51 @@ var filters = {};
 // moved filtertable functions up-
 // table filter and rebuild - called by updatedfilters
 function filterTableNotScore() {
-    let filteredData = musicData;
+    filteredData = musicData;
     Object.entries(filters).forEach(([key, value]) => {
         filteredData = filteredData.filter(row => row[key] === value);
     });
     buildTable(filteredData);
-    drawBarChart(filteredData);
+    drawStackedChart(filteredData);
 }
 
 function filterTableScore() {
-    let filteredData = musicData;
+    filteredData = musicData;
     Object.entries(filters).forEach(([key, value]) => {
         filteredData = filteredData.filter(row => row[key] >= value);
     });
     buildTable(filteredData);
-    drawBarChart(filteredData);
+    drawStackedChart(filteredData);
 }
 
+function filterTableDate() {
+    filteredData = musicData;
+    Object.entries(filters).forEach(([key, value]) => {
+        filteredData = filteredData.filter(row => row[key] === value);
+    });
+    buildTable(filteredData);
+    drawStackedChart(filteredData);
+}
 // updateFilters called by event listener for forms
 function updateFilters() {
-    let changedElement = d3.select(this);
-    let elementValue = changedElement.property("value");
-    let filterId = changedElement.attr("id");
-    console.log(filterId)
-    if (filterId === "meta_score") {
-        console.log(`--filterId=${filterId}--`)
-        console.log(filterId)
-        elementValue = parseInt(elementValue)
-        filters[filterId] = elementValue;
-        filterTableScore()
-    } else if (filterId === "date") {
-        console.log(`--filterId=${filterId}--`)
-        console.log(filterId)
-        console.log(elementValue)
-    } else {
-        console.log(`--filterId=${filterId}--`)
-        console.log(filterId)
-        console.log(elementValue)
-    }
+    changedElement = d3.select(this);
+    elementValue = changedElement.property("value");
+    filterId = changedElement.attr("id");
+
     if (elementValue) {
-        console.log(elementValue)
-        console.log(typeof elementValue)
-        filters[filterId] = elementValue;
+        if (filterId === "meta_score") {
+            filters[filterId] = elementValue;
+            return filterTableScore()
+        } else if (filterId != "meta_score") {
+            filters[filterId] = elementValue;
+            return filterTableNotScore()
+        }
     } else {
         delete filters[filterId];
+        return filterTableNotScore()
     }
-    console.log(filters[filterId])
-        // filterTable();
-}
 
+}
 // barchart link:https://d3-graph-gallery.com/graph/barplot_stacked_basicWide.html
 // set the dimensions and margins of the graph
 var margin = { top: 10, right: 30, bottom: 20, left: 50 },
@@ -150,13 +147,9 @@ function makeBarArray(obj) {
     return anArray
 }
 
-function fillInMissingSubgroups() {
-
-}
-
-function drawBarChart(bData) {
+function drawStackedChart(bData) {
     svg.html("")
-    console.log('----drawBarChart called----')
+    console.log('----drawStackedChart called----')
     chartDataObj = parseDataBar(bData)
     data = makeBarArray(chartDataObj)
     data['columns'] = Object.keys(data[0])

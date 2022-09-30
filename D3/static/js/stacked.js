@@ -31,7 +31,6 @@ function filterTableNotScore() {
     Object.entries(filters).forEach(([key, value]) => {
         filteredData = filteredData.filter(row => row[key] === value);
     });
-
     buildTable(filteredData);
     drawBarChart(filteredData);
 }
@@ -41,7 +40,6 @@ function filterTableScore() {
     Object.entries(filters).forEach(([key, value]) => {
         filteredData = filteredData.filter(row => row[key] >= value);
     });
-
     buildTable(filteredData);
     drawBarChart(filteredData);
 }
@@ -82,7 +80,7 @@ function updateFilters() {
 // set the dimensions and margins of the graph
 var margin = { top: 10, right: 30, bottom: 20, left: 50 },
     width = 800 - margin.left - margin.right,
-    height = 600 - margin.top - margin.bottom;
+    height = 475 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
 var svg = d3.select("#my_dataviz_bar")
@@ -118,11 +116,14 @@ function parseDataBar(data) {
         if (typeof binScoresByYear[currentYear] === 'undefined') {
             binScoresByYear[currentYear] = {};
             binScoresByYear[currentYear]['year'] = currentYear;
+            binScoresByYear[currentYear]['count'] = 1;
             binScoresByYear[currentYear][bin] = 1;
         } else if (typeof binScoresByYear[currentYear][bin] === 'undefined') {
             binScoresByYear[currentYear][bin] = 1;
+            binScoresByYear[currentYear]['count'] += 1
         } else {
             binScoresByYear[currentYear][bin] += 1;
+            binScoresByYear[currentYear]['count'] += 1;
         }
     }
     return binScoresByYear
@@ -131,13 +132,21 @@ let chartDataObj
 let subgroups
 let groups
 let stackedData
+let keyArray
+let anArray
+let data
+let max
 
 function makeBarArray(obj) {
-    let anArray = []
-    let keyArray = []
+    countArray = []
+    anArray = []
     for (const key of Object.keys(chartDataObj)) {
+        countArray.push(chartDataObj[`${key}`]['count'])
+        delete chartDataObj[`${key}`]['count']
         anArray.push(chartDataObj[`${key}`])
     }
+    max = Math.max(...countArray);
+    anArray['yDomain'] = max
     return anArray
 }
 
@@ -151,7 +160,8 @@ function drawBarChart(bData) {
     chartDataObj = parseDataBar(bData)
     data = makeBarArray(chartDataObj)
     data['columns'] = Object.keys(data[0])
-        // List of subgroups = header of the csv files = soil condition here
+
+    // List of subgroups = header of the csv files = soil condition here
     var subgroups = data.columns.slice(1)
 
     // List of groups = species here = value of the first column called group -> I show them on the X axis
@@ -168,7 +178,7 @@ function drawBarChart(bData) {
 
     // Add Y axis
     var y = d3.scaleLinear()
-        .domain([0, 510])
+        .domain([0, data.yDomain + 5])
         .range([height, 0]);
     svg.append("g")
         .call(d3.axisLeft(y));

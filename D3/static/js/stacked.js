@@ -103,13 +103,18 @@ function filterScores(score) {
     }
 }
 let binScoresByYear
+let binGroups
 
 function parseDataBar(data) {
     // parse data into an object containing years and range of scores as keys with counts as values
     binScoresByYear = {};
+    binGroups = []
     for (i = 0; i < data.length; i++) {
         let currentYear = data[i].date
         let bin = filterScores(data[i].meta_score)
+        if (binGroups.includes(bin) === false) {
+            binGroups.push(bin)
+        }
         if (typeof binScoresByYear[currentYear] === 'undefined') {
             binScoresByYear[currentYear] = {};
             binScoresByYear[currentYear]['year'] = currentYear;
@@ -138,6 +143,8 @@ function makeBarArray(obj) {
     countArray = []
     anArray = []
     for (const key of Object.keys(chartDataObj)) {
+        console.log('--traversing chartDataObj--')
+        console.log(key)
         countArray.push(chartDataObj[`${key}`]['count'])
         delete chartDataObj[`${key}`]['count']
         anArray.push(chartDataObj[`${key}`])

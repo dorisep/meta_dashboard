@@ -1,4 +1,4 @@
-let musicData
+let musicDatad
 let filteredData
 let changedElement
 let elementValue
@@ -88,6 +88,20 @@ var svg = d3.select("#my_dataviz_bar")
     .attr("transform",
         "translate(" + margin.left + "," + margin.top + ")");
 
+function setColorRange(arr) {
+    colorRange = []
+    colorOptions = ['#fc0505', '#828282', '#C5C5C5', '#000000']
+    if (arr.includes('90s') === true) {
+        colorRange.push('#fc0505')
+    } else if (arr.includes('80s') === true) {
+
+    } else if (arr.includes('70s') === true) {
+
+    } else if (arr.includes('60s') === true) {
+
+    }
+}
+
 function filterScores(score) {
     // filters scores in ranges
     console.log('-----filterScores------')
@@ -104,6 +118,7 @@ function filterScores(score) {
 }
 let binScoresByYear
 let binGroups
+let bin
 
 function parseDataBar(data) {
     // parse data into an object containing years and range of scores as keys with counts as values
@@ -111,7 +126,7 @@ function parseDataBar(data) {
     binGroups = []
     for (i = 0; i < data.length; i++) {
         let currentYear = data[i].date
-        let bin = filterScores(data[i].meta_score)
+        bin = filterScores(data[i].meta_score)
         if (binGroups.includes(bin) === false) {
             binGroups.push(bin)
         }
@@ -127,6 +142,7 @@ function parseDataBar(data) {
             binScoresByYear[currentYear][bin] += 1;
             binScoresByYear[currentYear]['count'] += 1;
         }
+        // binScoresByYear['binGroups'] = binGroups
     }
     return binScoresByYear
 }
@@ -138,18 +154,25 @@ let keyArray
 let anArray
 let data
 let max
-
+    // takes and obj and returns an array
+    // traverses an object and counts the 
+    // number of occurences for each bin
 function makeBarArray(obj) {
     countArray = []
     anArray = []
     for (const key of Object.keys(chartDataObj)) {
         console.log('--traversing chartDataObj--')
         console.log(key)
+        console.log(chartDataObj[`${key}`]['count'])
         countArray.push(chartDataObj[`${key}`]['count'])
         delete chartDataObj[`${key}`]['count']
         anArray.push(chartDataObj[`${key}`])
+        console.log('--anArray for you--')
+        console.log(countArray)
     }
     max = Math.max(...countArray);
+    console.log(max)
+    console.log(max)
     anArray['yDomain'] = max
     return anArray
 }

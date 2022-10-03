@@ -30,8 +30,13 @@ var filters = {};
 function filterTableNotScore() {
     filteredData = musicData;
     Object.entries(filters).forEach(([key, value]) => {
+        console.log('--traversing filtered data')
+        console.log(key)
+        console.log(value)
         filteredData = filteredData.filter(row => row[key] === value);
     });
+    console.log('--filteredTableNotScore--')
+    console.log(filteredData)
     buildTable(filteredData);
     drawStackedChart(filteredData);
 }
@@ -89,17 +94,25 @@ var svg = d3.select("#my_dataviz_bar")
         "translate(" + margin.left + "," + margin.top + ")");
 
 function setColorRange(arr) {
-    colorRange = []
-    colorOptions = ['#fc0505', '#828282', '#C5C5C5', '#000000']
+    colorObj = {
+        'colorRange': [],
+        'colorDomain': []
+    }
+    colorDomain = []
     if (arr.includes('90s') === true) {
         colorRange.push('#fc0505')
+        colorDomain.push('90s')
     } else if (arr.includes('80s') === true) {
-
+        colorRange.push('#828282')
+        colorDomain.push('80s')
     } else if (arr.includes('70s') === true) {
-
+        colorRange.push('#C5C5C5')
+        colorDomain.push('70s')
     } else if (arr.includes('60s') === true) {
-
+        colorRange.push('#000000')
+        colorDomain.push('60s')
     }
+    return colorObj
 }
 
 function filterScores(score) {
@@ -122,7 +135,9 @@ let bin
 
 function parseDataBar(data) {
     // parse data into an object containing years and range of scores as keys with counts as values
-    binScoresByYear = {};
+    binScoresByYear = {
+        'parseDataBar': {}
+    };
     binGroups = []
     for (i = 0; i < data.length; i++) {
         let currentYear = data[i].date
@@ -130,19 +145,19 @@ function parseDataBar(data) {
         if (binGroups.includes(bin) === false) {
             binGroups.push(bin)
         }
-        if (typeof binScoresByYear[currentYear] === 'undefined') {
-            binScoresByYear[currentYear] = {};
-            binScoresByYear[currentYear]['year'] = currentYear;
-            binScoresByYear[currentYear]['count'] = 1;
-            binScoresByYear[currentYear][bin] = 1;
-        } else if (typeof binScoresByYear[currentYear][bin] === 'undefined') {
-            binScoresByYear[currentYear][bin] = 1;
-            binScoresByYear[currentYear]['count'] += 1
+        if (typeof binScoresByYear['parseDataBar'][currentYear] === 'undefined') {
+            binScoresByYear['parseDataBar'][currentYear] = {};
+            binScoresByYear['parseDataBar'][currentYear]['year'] = currentYear;
+            binScoresByYear['parseDataBar'][currentYear]['count'] = 1;
+            binScoresByYear['parseDataBar'][currentYear][bin] = 1;
+        } else if (typeof binScoresByYear['parseDataBar'][currentYear][bin] === 'undefined') {
+            binScoresByYear['parseDataBar'][currentYear][bin] = 1;
+            binScoresByYear['parseDataBar'][currentYear]['count'] += 1
         } else {
-            binScoresByYear[currentYear][bin] += 1;
-            binScoresByYear[currentYear]['count'] += 1;
+            binScoresByYear['parseDataBar'][currentYear][bin] += 1;
+            binScoresByYear['parseDataBar'][currentYear]['count'] += 1;
         }
-        // binScoresByYear['binGroups'] = binGroups
+        binScoresByYear['binGroups'] = binGroups
     }
     return binScoresByYear
 }
@@ -154,25 +169,28 @@ let keyArray
 let anArray
 let data
 let max
+let binsPassed
     // takes and obj and returns an array
     // traverses an object and counts the 
     // number of occurences for each bin
 function makeBarArray(obj) {
     countArray = []
     anArray = []
-    for (const key of Object.keys(chartDataObj)) {
-        console.log('--traversing chartDataObj--')
-        console.log(key)
-        console.log(chartDataObj[`${key}`]['count'])
-        countArray.push(chartDataObj[`${key}`]['count'])
-        delete chartDataObj[`${key}`]['count']
-        anArray.push(chartDataObj[`${key}`])
-        console.log('--anArray for you--')
-        console.log(countArray)
+
+
+    for (const key of Object.keys(obj.parseDataBar)) {
+        // console.log('--traversing chartDataObj--')
+        // console.log(key)
+        // console.log(chartDataObj[`${key}`]['count'])
+        countArray.push(obj.parseDataBar[`${key}`]['count'])
+        delete obj.parseDataBar[`${key}`]['count']
+        anArray.push(obj.parseDataBar[`${key}`])
+            // console.log('--anArray for you--')
+            // console.log(countArray)
     }
     max = Math.max(...countArray);
-    console.log(max)
-    console.log(max)
+    // console.log(max)
+    // console.log(max)
     anArray['yDomain'] = max
     return anArray
 }
@@ -185,7 +203,7 @@ function drawStackedChart(bData) {
     data['columns'] = Object.keys(data[0])
 
     // List of subgroups = header of the csv files = soil condition here
-    subgroups = data.columns.slice(1)
+    subgroups = data.binGroups
 
     // List of groups = species here = value of the first column called group -> I show them on the X axis
     groups = d3.map(data, function(d) { return (d.year) }).keys()
@@ -208,12 +226,12 @@ function drawStackedChart(bData) {
 
     // color palette = one color per subgroup
     var color = d3.scaleOrdinal()
-        .domain(subgroups)
+        .domain(chartDataObj.binGroups)
         .range(['#fc0505', '#828282', '#C5C5C5', '#000000'])
 
     //stack the data? --> stack per subgroup
     var stackedData = d3.stack()
-        .keys(subgroups)
+        .keys(chartDataObj.binGroups)
         (data)
 
     // Show the bars

@@ -92,26 +92,29 @@ var svg = d3.select("#my_dataviz_bar")
     .append("g")
     .attr("transform",
         "translate(" + margin.left + "," + margin.top + ")");
+let colorObj
+let colorDomain
+let colorRange
 
 function setColorRange(arr) {
-    colorObj = {
-        'colorRange': [],
-        'colorDomain': []
-    }
-    colorDomain = []
-    if (arr.includes('90s') === true) {
-        colorRange.push('#fc0505')
-        colorDomain.push('90s')
-    } else if (arr.includes('80s') === true) {
-        colorRange.push('#828282')
-        colorDomain.push('80s')
-    } else if (arr.includes('70s') === true) {
-        colorRange.push('#C5C5C5')
-        colorDomain.push('70s')
-    } else if (arr.includes('60s') === true) {
-        colorRange.push('#000000')
-        colorDomain.push('60s')
-    }
+    colorObj = {}
+    colorRange = []
+
+    sortedArr = arr.sort((a, b) => { return b - a })
+    sortedArr.forEach(e => {
+        if (e === '90') {
+            colorRange.push('#fc0505')
+        } else if (e === '80') {
+            colorRange.push('#828282')
+        } else if (e == '70') {
+            colorRange.push('#C5C5C5')
+        } else {
+            colorRange.push('#000000')
+        }
+    })
+    colorObj['colorDomain'] = arr
+    colorObj['colorRange'] = colorRange
+
     return colorObj
 }
 
@@ -120,13 +123,13 @@ function filterScores(score) {
     console.log('-----filterScores------')
 
     if (score >= 90) {
-        return "90s"
+        return "90"
     } else if (score < 90 && score >= 80) {
-        return "80s"
+        return "80"
     } else if (score < 80 && score >= 70) {
-        return "70s"
+        return "70"
     } else {
-        return "60s"
+        return "60"
     }
 }
 let binScoresByYear
@@ -194,11 +197,14 @@ function makeBarArray(obj) {
     anArray['yDomain'] = max
     return anArray
 }
+let colorPalateObj
 
 function drawStackedChart(bData) {
     svg.html("")
     console.log('----drawStackedChart called----')
     chartDataObj = parseDataBar(bData)
+    colorPalateObj = setColorRange(chartDataObj.binGroups)
+
     data = makeBarArray(chartDataObj)
     data['columns'] = Object.keys(data[0])
 
@@ -226,8 +232,8 @@ function drawStackedChart(bData) {
 
     // color palette = one color per subgroup
     var color = d3.scaleOrdinal()
-        .domain(chartDataObj.binGroups)
-        .range(['#fc0505', '#828282', '#C5C5C5', '#000000'])
+        .domain(colorPalateObj.colorDomain)
+        .range(colorPalateObj.colorRange)
 
     //stack the data? --> stack per subgroup
     var stackedData = d3.stack()

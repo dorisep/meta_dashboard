@@ -80,7 +80,7 @@ function updateFilters() {
 }
 // barchart link:https://d3-graph-gallery.com/graph/barplot_stacked_basicWide.html
 // set the dimensions and margins of the graph
-var margin = { top: 10, right: 30, bottom: 20, left: 50 },
+var margin = { top: 10, right: 40, bottom: 20, left: 20 },
     width = 800 - margin.left - margin.right,
     height = 475 - margin.top - margin.bottom;
 

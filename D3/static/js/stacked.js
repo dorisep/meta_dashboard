@@ -103,13 +103,13 @@ function setColorRange(arr) {
     sortedArr = arr.sort((a, b) => { return b - a })
     sortedArr.forEach(e => {
         if (e === '90') {
-            colorRange.push('#fc0505')
+            colorRange.push('red')
         } else if (e === '80') {
-            colorRange.push('#828282')
+            colorRange.push('silver')
         } else if (e == '70') {
-            colorRange.push('#C5C5C5')
+            colorRange.push('grey')
         } else {
-            colorRange.push('#000000')
+            colorRange.push('black')
         }
     })
     colorObj['colorDomain'] = arr

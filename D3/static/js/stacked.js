@@ -139,7 +139,8 @@ let bin
 function parseDataBar(data) {
     // parse data into an object containing years and range of scores as keys with counts as values
     binScoresByYear = {
-        'parseDataBar': {}
+        'parseDataBar': {},
+        'binCount': {}
     };
     binGroups = []
     for (i = 0; i < data.length; i++) {
@@ -147,6 +148,9 @@ function parseDataBar(data) {
         bin = filterScores(data[i].meta_score)
         if (binGroups.includes(bin) === false) {
             binGroups.push(bin)
+            binScoresByYear['binCount'][bin] = 1
+        } else {
+            binScoresByYear['binCount'][bin] += 1
         }
         if (typeof binScoresByYear['parseDataBar'][currentYear] === 'undefined') {
             binScoresByYear['parseDataBar'][currentYear] = {};
@@ -162,6 +166,7 @@ function parseDataBar(data) {
         }
         binScoresByYear['binGroups'] = binGroups
     }
+    console.log(binScoresByYear.binCount)
     return binScoresByYear
 }
 let chartDataObj

@@ -1,9 +1,4 @@
-let musicDatad
-let filteredData
-let changedElement
-let elementValue
-let filterId
-    // color = ƒ n(n){var o=n+"",u=e.get(o);if(!u){if(i!==yv)return i;e.set(o,u=r.push(n))}return t[(u-1)%t.length]}
+// color = ƒ n(n){var o=n+"",u=e.get(o);if(!u){if(i!==yv)return i;e.set(o,u=r.push(n))}return t[(u-1)%t.length]}
 d3.json("/get_init_data", function(data) {
         musicData = data;
         buildTable(data);
@@ -36,7 +31,7 @@ function filterTableNotScore() {
         filteredData = filteredData.filter(row => row[key] === value);
     });
     console.log('--filteredTableNotScore--')
-    console.log(filteredData)
+        // console.log(filteredData)
     buildTable(filteredData);
     drawStackedChart(filteredData);
 }
@@ -50,15 +45,6 @@ function filterTableScore() {
     drawStackedChart(filteredData);
 }
 
-function filterTableDate() {
-    filteredData = musicData;
-    Object.entries(filters).forEach(([key, value]) => {
-        filteredData = filteredData.filter(row => row[key] === value);
-    });
-    buildTable(filteredData);
-    drawStackedChart(filteredData);
-}
-// updateFilters called by event listener for forms
 function updateFilters() {
     changedElement = d3.select(this);
     elementValue = changedElement.property("value");
@@ -80,8 +66,8 @@ function updateFilters() {
 }
 // barchart link:https://d3-graph-gallery.com/graph/barplot_stacked_basicWide.html
 // set the dimensions and margins of the graph
-var margin = { top: 10, right: 40, bottom: 20, left: 20 },
-    width = 800 - margin.left - margin.right,
+var margin = { top: 10, right: 20, bottom: 20, left: 20 },
+    width = 900 - margin.left - margin.right,
     height = 475 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
@@ -92,9 +78,6 @@ var svg = d3.select("#my_dataviz_bar")
     .append("g")
     .attr("transform",
         "translate(" + margin.left + "," + margin.top + ")");
-let colorObj
-let colorDomain
-let colorRange
 
 function setColorRange(arr) {
     colorObj = {}
@@ -140,7 +123,12 @@ function parseDataBar(data) {
     // parse data into an object containing years and range of scores as keys with counts as values
     binScoresByYear = {
         'parseDataBar': {},
-        'binCount': {}
+        'binCount': {
+            '90': 0,
+            '80': 0,
+            '70': 0,
+            '60': 0
+        }
     };
     binGroups = []
     for (i = 0; i < data.length; i++) {
@@ -166,21 +154,13 @@ function parseDataBar(data) {
         }
         binScoresByYear['binGroups'] = binGroups
     }
-    console.log(binScoresByYear.binCount)
+    populateKPI(binScoresByYear.binCount)
+    delete binScoresByYear["binCount"]
     return binScoresByYear
 }
-let chartDataObj
-let subgroups
-let groups
-let stackedData
-let keyArray
-let anArray
-let data
-let max
-let binsPassed
-    // takes and obj and returns an array
-    // traverses an object and counts the 
-    // number of occurences for each bin
+// takes and obj and returns an array
+// traverses an object and counts the 
+// number of occurences for each bin
 function makeBarArray(obj) {
     countArray = []
     anArray = []
@@ -202,7 +182,6 @@ function makeBarArray(obj) {
     anArray['yDomain'] = max
     return anArray
 }
-let colorPalateObj
 
 function drawStackedChart(bData) {
     svg.html("")
@@ -262,5 +241,20 @@ function drawStackedChart(bData) {
         .attr("width", x.bandwidth())
 }
 
+function populateKPI(bData) {
+    console.log("--populate KPI called--")
+    for (const [key, value] of Object.entries(bData)) {
+        if (key == 90) {
+            d3.select('#count90').text(value)
+        } else if (key == 80) {
+            d3.select('#count80').text(value)
+        } else if (key == 70) {
+            d3.select('#count70').text(value)
+        } else {
+            d3.select('#count60').text(value)
+        }
+    }
+    // d3.select("#count90").text(bdata["90"])
+}
 
 d3.selectAll("input").on("change", updateFilters);

@@ -21,3 +21,7 @@ tr {
     display: table;
     table-layout: fixed;
 }
+
+#kpi {
+    border-left: 5px solid red;
+}

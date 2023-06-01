@@ -1,17 +1,11 @@
-# meta_dashboard
-# to-do
+# meta_dashboard - A web application and server for analyzing the past twenty years of music reviews on metacritic.
+## A dynamic dashboard that allows users to filter a table, barchart and KPIs by album name, artist, record labl, genres, year and scores
+### Technologies
+- Web Server - Flask
+- visulzations - Plotly
+- Table - DataTables - jquery plugin
+- Database - sqlite
 
-- add visualizations
-    - handle variations caused by filters on data
-        - assigning colors when amount and types of bins vary - complete
-        - switching to regular bar chart when selecting one year 
-            - xticks = bins(date)
-        - 
-    
-- add features to search
-    - range in dates
-    - pattern matching for all forms that take strings
-    - case agnostic
-    - add filtering by links to table
+---
 
-- add links to values on tables
+![finished dash](images/completed_dash.png)
